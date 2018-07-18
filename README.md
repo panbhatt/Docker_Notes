@@ -70,7 +70,7 @@
 	10. USEr -> used to specify the user under which the commands can be run. Can be used with CMD/RUN things. 
 	11. WORKDIR : Sets the working directory for same set of instructions (e.g. RUN/CMD/ENTRYPOINT)
 	12. ONBUILD RUN <COMMAND> : this would a command (like update and upgrade package) every time our images is used as a base for another image. 
-	13. ENV : set env variables (available when image is build and when executed).
+	13. ENV : set env variables (available when image is build and when executed).E.g. ENV a=b c=d
 	
 **Build DockerFile** : docker image build --help -> To get list of all options.	
 docker image build -f <DOCKER_FILE_PATH> -t <REPOSITORY>:<TAG> . 
@@ -80,8 +80,23 @@ docker image build -f <DOCKER_FILE_PATH> -t <REPOSITORY>:<TAG> .
 **DOCKER has a empty tar file called scratch on top of which you can create your dockerfile.**
 	
 		
-		
-		
+## DOCKER REGISTRY ##
+1. Read how to create Docker Registry (running it within DOCKER container).
+2. Docker Registry uses /var/lib/registry folder to store all images on the local file system, however you can use Google Cloud, Azure, Amazon S3 and Swift. 
+3. All pull/push related to the registry must be preceded by the localhost:5000 to determine the registry. 
+4. MICROBADGER is a website that gives you all the information about a image publicly available on DOCKER HUB. 
+5. Steps to do registry 
+	1.  docker image pull registry:2 -> Will pull docker registry application.
+	2.  docker image ls -> the above image will be available in docker ls
+	3.  docker container run -d -p 5000:5000 --name DockerRegistry registry:2  -> it will run the registry.
+	4.  docker image pull alpine
+	5.  docker image tag alpine localhost:5000/localalpine  ->  Tag the image on our local 
+	6.  docker image push localhost:5000/localalpine -> this will push the image to registry
+	7.  docker image rm alpine localhost:5000/localalpine -> This will delete the local tagged images, (since now you have two images having same layer i.e. image ID).
+	8.  docker image pull localhost:5000/localalpine:latest -> It will pull from the current running registry on your local. 
+
+
+## MANAGING CONTAINERS ##	
 
 
 ###################################################################
