@@ -84,7 +84,7 @@ docker image build -f <DOCKER_FILE_PATH> -t <REPOSITORY>:<TAG> .
 1. Read how to create Docker Registry (running it within DOCKER container).
 2. Docker Registry uses /var/lib/registry folder to store all images on the local file system, however you can use Google Cloud, Azure, Amazon S3 and Swift. 
 3. All pull/push related to the registry must be preceded by the localhost:5000 to determine the registry. 
-4. MICROBADGER is a website that gives you all the information about a image publicly available on DOCKER HUB. 
+4. MICROBADGER is a website that gives you all the information about a image publicly available on DOCKER HUB. DTR is enterprise based solution (Docker Trusted Registry)
 5. Steps to do registry 
 	1.  docker image pull registry:2 -> Will pull docker registry application.
 	2.  docker image ls -> the above image will be available in docker ls
@@ -96,8 +96,80 @@ docker image build -f <DOCKER_FILE_PATH> -t <REPOSITORY>:<TAG> .
 	8.  docker image pull localhost:5000/localalpine:latest -> It will pull from the current running registry on your local. 
 
 
-## MANAGING CONTAINERS ##	
+##MANAGING CONTAINERS
+1. **docker container run hello-world**
+2. **docker container ls -a** -> display all the containers (even if they are exited).
+3. **docker container rm <CONTAINER_ID>**-> Remove the container ID. 
+4. Options used in docker container run command [ docker container run --help ] 
+	1. -d -> Detach and run it in the background. 
+	2. --name -> This is used to Give the container a name.
+	2. -p -> For PORT Forwarding
+5. **docker container attach <NAME_OR_IMAGE_ID> **  
+	1. **docker container attach **--sig-proxy=false**     [NAME\_CONTAINER\_ID] **-> if you press CTRL-C will detach from the process 
 
+6. **docker container exec [NAME] cat /etc/debian_version**  : it spawns another process within the container and executes the command > e.g. this one will list the contents of the file on screen.
+	1. **docker container exec -it NAME_ID /bin/bash** (will execute bash and attach you to it, if you dont' pass -it , it will kind of hang and wait for you to kill it. ps -elf will show you all the processes running in the system. 
+7. **docker container pause nginx1 **: it will PAUSE the container, for resume use unpause
+
+###LOGS CONTAINER###
+1. The logs command allows you to interact with the STDOUT stream of your containers
+	1. docker container logs --tail 5 NAME\_CONTAINER\_ID
+	2. docker container logs -f NAME_\CONTAINER\_ID
+	3. docker container logs --since 2017-06-24T15:00 NAME_\CONTAINER\_ID : Get logs since time
+	4. docker timestamp is always behind when the log happens. to show docker captured time we have to use -t flag. 
+
+###TOP Command
+1. IT shows the processes running within the container. **docker container top NAME\_ID**
+
+###STATS Command
+1. IT shows the real time information on (single or all) running within the container. **docker container stats NAME\_ID**
+
+###RESOURCES LIMITS on Container
+1. docker container run -d --cpu-shares 512 --memory 128M ubuntu  [ Applying resource limits]
+2. docker container update --cpu-shares 512 --memory 128M --memory-swap 128M ubuntu [ Update it after running ]
+
+### start / stop / restart / kill commands ##
+1. docker container stop -t 60 nginx1 : [ stop in 60 seconds ]
+2. docker container start nginx2 nginx3 : [it starts from scratch] 
+3. docker container kill nginx3 [Kill the container sending SIGTERM 9]
+
+### Removing Containers 
+1. docker container prune : To remove exited containers
+2. docker container rm nginx4 : Remove a container , -f forcefully
+
+### Creating Containers/ list ports of a container/ diff
+1. docker container create -p 8080:80 nginx **->** Only create the container but dont' start it.
+2. docker container port NAME\_ID **->** List the port of the container that was being mapped.
+3. docker container diff nginx-test **->** List the diff in the files between image n running container. 
+
+## DOCKER NETWORKING 
+1. docker network create moby-counter **->** Create a Network
+2. docker container run --network moby-counter redis:alpine **->** : Start a container in the network.
+3. docker network prune 
+
+**NOTE:** you can run multiple composite applications (i.e. a system) in two networks.
+
+## DOCKER MACHINE
+
+1. A tool to install docker host anywhere on AWS/OpenStack/GCP/Azure/VMWARE/VirtualBox. 
+
+## DOCKER COMPOSE.  
+
+1. File would be **docker-compose.yml**
+2. use **docker-compose up** 
+3. Options to use in above command are -d :-> To Run in the background. 
+4. use **docker-compose ps** : to list the containers that are present in the docker compose yaml file. 
+5. **docker-compose config** :-> This will check your docker compose yml file and render copy of the yaml file to the screen.
+6. **docker-compose pull** -> will pull any images it find i the yaml file. 
+7. **docker-compose build**  -> will execute any build instructions it find in the file.  
+8. **docker-compose create**  -> will create the containers but won't launch anything.
+9. **docker-compose top** -> Display information about processes running in all launched containers.
+10. **docker-compose logs** -> Display LOGS of all the processes running in all launched containers.
+11. **docker-compose events** -> Display all the events. 
+12. **docker-compose pause** -> will pause all the launched containers. 
+
+
+13. **docker-compose exec worker ping -c 3 db** -> Execute the EXEC command from the worker container and ping the DB machine.
 
 ###################################################################
 
