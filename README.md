@@ -170,6 +170,38 @@ docker image build -f <DOCKER_FILE_PATH> -t <REPOSITORY>:<TAG> .
 
 
 13. **docker-compose exec worker ping -c 3 db** -> Execute the EXEC command from the worker container and ping the DB machine.
+14. **docker-compose kill** -> It will kill all the containers launched previously. **stop** can be used for a graceful shutdown. 
+15. **docker-compose rm** -> Remove any containers with the state of EXITED. 
+16. **docker-compose down** -> This will remove the containers and the networks created when running **docker-compose up**.
+
+
+###Links to Read###
+[https://michalzalecki.com/docker-compose-for-nodejs-and-postgresql/](https://michalzalecki.com/docker-compose-for-nodejs-and-postgresql/ "https://michalzalecki.com/docker-compose-for-nodejs-and-postgresql/")
+
+[https://blog.codeship.com/using-docker-compose-for-nodejs-development/](https://blog.codeship.com/using-docker-compose-for-nodejs-development/ "https://blog.codeship.com/using-docker-compose-for-nodejs-development/")
+
+[https://medium.com/datreeio/node-js-docker-workflow-b9d936c931e1](https://medium.com/datreeio/node-js-docker-workflow-b9d936c931e1 "https://medium.com/datreeio/node-js-docker-workflow-b9d936c931e1")     
+Best production ready things are explained here. 
+
+[https://nodejs.org/en/docs/guides/nodejs-docker-webapp/](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/ "Create Nodejs based Docker image by Nodejs Org")
+
+### SCALE Command ###
+This is used to scale the number of a specific service to a number of instances. 
+**docker-compose up -d --scale worker=3**
+
+
+## DOCKER SWARM ##
+1. Docker Swarm mode comes with docker pas ahead of 1.12 version.
+2. **docker swarm --help** -> Gives you all the details of docker swarm.
+3. A Host can assume only two roles (one at a time) : MANAGER / WORKER 
+4. For production we need to have minimum of 5 Cluster manager (that can take max 2 system failures). 
+
+### STEPS: 
+1. docker swarm init --advertise-addr 192.168.56.104:2377  --listen-addr 192.168.56.104:2377
+2. JOIN a WORKER: docker swarm join 192.168.56.104:2377 --token *********   -> This will give a reply that the worker had joined the cluster. 
+
+##IMPORTANT READS
+[https://medium.com/lucjuggery/about-var-run-docker-sock-3bfd276e12fd](https://medium.com/lucjuggery/about-var-run-docker-sock-3bfd276e12fd "Desc of DOCKER SOCK /var/run/docker.sock")
 
 ###################################################################
 
