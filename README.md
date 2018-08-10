@@ -185,16 +185,62 @@ Best production ready things are explained here.
 
 [https://nodejs.org/en/docs/guides/nodejs-docker-webapp/](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/ "Create Nodejs based Docker image by Nodejs Org")
 
+[https://medium.com/ma-digital-services/dev-env-5d35b97f3473](https://medium.com/ma-digital-services/dev-env-5d35b97f3473 "DOCKER COMPOSE BIG EXAMPLE")  Docker Compose Big Example.
+
 ### SCALE Command ###
 This is used to scale the number of a specific service to a number of instances. 
 **docker-compose up -d --scale worker=3**
 
+## DOCKER GUI'S
+[https://blog.codeship.com/docker-guis/](https://blog.codeship.com/docker-guis/ "https://blog.codeship.com/docker-guis/")
+## Interesting packages. 
+[https://www.infoq.com/articles/metaparticle-pulumi-ballerina](https://www.infoq.com/articles/metaparticle-pulumi-ballerina "https://www.infoq.com/articles/metaparticle-pulumi-ballerina")
 
 ## DOCKER SWARM ##
 1. Docker Swarm mode comes with docker pas ahead of 1.12 version.
 2. **docker swarm --help** -> Gives you all the details of docker swarm.
 3. A Host can assume only two roles (one at a time) : MANAGER / WORKER 
 4. For production we need to have minimum of 5 Cluster manager (that can take max 2 system failures). 
+
+### Commands after testing
+**sudo docker swarm init --advertise-addr 192.168.1.20:2377 --listen-addr 192.168.1.20:2377**
+Swarm initialized: current node (t4hyd9kuo4qjnvturkq5uanrp) is now a manager.
+
+**To add a worker to this swarm, run the following command:**
+
+docker swarm join --token SWMTKN-1-2hvuupx97en93ywdnjzct09jtb0k1xnfpxq2d54iycph0zdg7f-07psc70n8gj01a2jd2xfxtklg 192.168.1.20:2377
+
+**To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.**
+
+**pankaj@b76:~$ sudo docker swarm join-token manager**
+To add a manager to this swarm, run the following command:
+
+docker swarm join --token SWMTKN-1-2hvuupx97en93ywdnjzct09jtb0k1xnfpxq2d54iycph0zdg7f-dra8hy6e5smfxiidchls0kuo0 192.168.1.20:2377
+
+**pankaj@b76:~$ sudo docker node ls**
+**pankaj@b76:~$ sudo docker-machine ls**
+NAME             ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
+swarm-worker01   -        virtualbox   Running   tcp://192.168.99.101:2376           v18.06.0-ce   
+pankaj@b76:~$ 
+
+**From the Swarm Machine:**
+**sudo docker-machine ssh swarm-worker01**
+docker swarm join --token SWMTKN-1-2hvuupx97en93ywdnjzct09jtb0k1xnfpxq2d54iycph0zdg7f-07psc70n8gj01a2jd2xfxt
+klg 192.168.1.20:2377
+This node joined a swarm as a worker.
+
+sudo docker node demote pankajUBClone
+sudo docker node ls
+
+ sudo docker node promote pankajUBClone
+sudo docker node ls
+
+
+**sudo docker node update --availability drain pankajUBClone**  -> remove the node for sometime , so that maintenance activity can be perofrmed on it. 
+**sudo docker node update --availability active pankajUBClone**  -> Restore it back. 
+
+
+### Tutorial : [https://rominirani.com/docker-swarm-tutorial-b67470cf8872](https://rominirani.com/docker-swarm-tutorial-b67470cf8872 "https://rominirani.com/docker-swarm-tutorial-b67470cf8872")
 
 ### STEPS: 
 1. docker swarm init --advertise-addr 192.168.56.104:2377  --listen-addr 192.168.56.104:2377
