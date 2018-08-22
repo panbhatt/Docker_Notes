@@ -1,3 +1,6 @@
+## Add user to docker
+sudo usermod -aG docker $USER
+
 # BOOK - DOCKER DEEP DIVE NOTES #
 
 1. TO Show SHA : docker image ls --digests (show the SHA of the image). 
@@ -174,6 +177,10 @@ docker image build -f <DOCKER_FILE_PATH> -t <REPOSITORY>:<TAG> .
 15. **docker-compose rm** -> Remove any containers with the state of EXITED. 
 16. **docker-compose down** -> This will remove the containers and the networks created when running **docker-compose up**.
 
+### Third Party Tools
+1. **Docker-compose-viz **: This docker container (or tool) will inspect a docker compose file and will generate a graphical image of the complete system. 
+2. **UNIVERSAL CONTROL PLANE** -> Enterprise Grade Cluster Management System.
+
 
 ###Links to Read###
 [https://michalzalecki.com/docker-compose-for-nodejs-and-postgresql/](https://michalzalecki.com/docker-compose-for-nodejs-and-postgresql/ "https://michalzalecki.com/docker-compose-for-nodejs-and-postgresql/")
@@ -244,11 +251,47 @@ sudo docker node ls
 
 ### STEPS: 
 1. docker swarm init --advertise-addr 192.168.56.104:2377  --listen-addr 192.168.56.104:2377
-2. JOIN a WORKER: docker swarm join 192.168.56.104:2377 --token *********   -> This will give a reply that the worker had joined the cluster. 
+2. JOIN a WORKER: docker swarm join 192.168.56.104:2377 --token *********   -> This will give a reply that the worker had joined the cl
+3. 
+4. uster. 
+
+## DOCKER SECURITY
+1. **docker container diff mysql** -> This command will allow you to figure out the diff between the image and the running container.
+2. **DOCKER BENCH** : Run a docker container against the HOST for which we want to check for the vulnerability and it will give CIS (Container for Internet Security) related benchmarks (Container Industry standard). It covers Docker Daemon configuration, Docker daemon configuration files, container images and build files, container runtime and Docker Security Operations. 
+3. Third Party Services.
+	1. Quay
+	2. Clair
+
+
+#BOOK -> Deployment with Docker - Apply Continous Integration Models.
+
+**This is one of the best books to start up and whenever you wanted to return to learn stuff quickly. **
+
+
+
+
+##TO DO : 
+Docker Management Design Pattern on SWARM - AWS
+Continous Delivery with DOCKER n JENKINS
+KUBERNETES in ACTION
+Docker and Kubernetes for java developers. 
 
 ##IMPORTANT READS
 [https://medium.com/lucjuggery/about-var-run-docker-sock-3bfd276e12fd](https://medium.com/lucjuggery/about-var-run-docker-sock-3bfd276e12fd "Desc of DOCKER SOCK /var/run/docker.sock")
 
+**Load Balancing in Docker SWARM** : [https://botleg.com/stories/load-balancing-with-docker-swarm/](https://botleg.com/stories/load-balancing-with-docker-swarm/ "https://botleg.com/stories/load-balancing-with-docker-swarm/")
+**Monitoring Docker Swarm with cAdvisor, InfluxDB and Grafana** 
+[https://botleg.com/stories/monitoring-docker-swarm-with-cadvisor-influxdb-and-grafana/](https://botleg.com/stories/monitoring-docker-swarm-with-cadvisor-influxdb-and-grafana/ "https://botleg.com/stories/monitoring-docker-swarm-with-cadvisor-influxdb-and-grafana/")
+**Log Management for Docker Swarm with ELK Stack** [https://botleg.com/stories/log-management-of-docker-swarm-with-elk-stack/](https://botleg.com/stories/log-management-of-docker-swarm-with-elk-stack/ "https://botleg.com/stories/log-management-of-docker-swarm-with-elk-stack/")
+**Building Blue-Green Deployment with Docker** [https://botleg.com/stories/blue-green-deployment-with-docker/](https://botleg.com/stories/blue-green-deployment-with-docker/ "https://botleg.com/stories/blue-green-deployment-with-docker/")
+**Auto Scaling with Docker** [https://botleg.com/stories/auto-scaling-with-docker/](https://botleg.com/stories/auto-scaling-with-docker/ "https://botleg.com/stories/auto-scaling-with-docker/")
+**Setup Gitlab for Docker based development** : [https://botleg.com/stories/setup-gitlab-for-docker-based-development/](https://botleg.com/stories/setup-gitlab-for-docker-based-development/ "https://botleg.com/stories/setup-gitlab-for-docker-based-development/")
+
+
+**HTTPS with Let's Encrypt and nginx** : [https://botleg.com/stories/https-with-lets-encrypt-and-nginx/](https://botleg.com/stories/https-with-lets-encrypt-and-nginx/ "https://botleg.com/stories/https-with-lets-encrypt-and-nginx/")
+
+
+[https://docker-curriculum.com](https://docker-curriculum.com "https://docker-curriculum.com")
 ###################################################################
 
 Loook for : 3
@@ -273,14 +316,43 @@ Developing with Docker - .pdf    - 2
 Mastering - Docker  - 1
 
 
-
-
-
-
-
-
 DevOps - Jenkins Deep Dive
 
 
 
+## PLURALSIGHT VIDEOS:
+VIDEOS BOOKS as SWARM
+HEALTH with DOCKER
+Docker in Production Using Amazon Web Services
+https://app.pluralsight.com/paths/skills/managing-containers-with-docker
 
+
+
+
+
+
+###################################################
+#KUBERNETES#
+##KUBERNETES DEEP DIVE ##
+[https://labs.play-with-k8s.com](https://labs.play-with-k8s.com "https://labs.play-with-k8s.com")
+
+[https://training.play-with-kubernetes.com/](https://training.play-with-kubernetes.com/ "https://training.play-with-kubernetes.com/")
+
+
+1. kubectl version  --output json -> This will give  the version in the JSON Format. 
+2. kubeadm version --output yaml -> Thsi will give version of KUBEADM in the yaml format. 
+3. kubeadm init --apiserver-advertise-address $(hostname -i)  -> Start a CLUSTER
+4. kubectl get nodes -> Gives list of nodes, you will see NOTREADY
+5. kubectl apply -n kube-system -f \
+    "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" -> This will create a POD network and will make the KUBERNETES ready. Try command no 4 above to verify this.
+
+6. Create another instance : kubeadm join --token f969fb.2c22a568412952e5 192.168.0.13:6443 --discovery-token-ca-cert-hash sha256:1a89071d50f30360268bdb43b298838d19f095a979b5e56810e4c16c13af20a9 
+7. Run -> kubectl get nodes 
+
+##INSTALLATION 
+1. https://medium.com/@Alibaba_Cloud/how-to-install-and-deploy-kubernetes-on-ubuntu-16-04-6769fd1646db
+
+MINIKUBE Download LINKE: https://github.com/kubernetes/minikube/releases 	
+
+###MINIKUBE
+	1. https://www.marksei.com/minikube-kubernetes-windows/ : Installation of MINIKUBE on WINDOWS.
