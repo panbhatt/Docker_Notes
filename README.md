@@ -356,3 +356,14 @@ MINIKUBE Download LINKE: https://github.com/kubernetes/minikube/releases
 
 ###MINIKUBE
 	1. https://www.marksei.com/minikube-kubernetes-windows/ : Installation of MINIKUBE on WINDOWS.
+
+
+## KUBERNETES IN ACTION (2018 Print)
+### Installation: 
+	1. KOPS (to install K8) over AWS, GKE, VM WARE, VSPHERE).
+	2. MiniKUBE for Single Node Kubernetes cluster. 
+	3. KubeAdm is for k8 administration.
+	4. kubectl for running command line client application (use autocomplete in it). 
+
+
+### POD -> REPLICATION CONTROLLER -> SERVICE (Load balancer Type)
